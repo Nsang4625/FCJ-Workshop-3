@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.128.0">
+    <meta name="description" content="">
+<meta name="author" content="journeyoftheaverageguy@gmail.com">
+
+    <link rel="icon" href="../images/favicon.png" type="image/png">
+
+    <title>Configure Karpenter :: AWS System Manager</title>
+
+    
+    <link href="../css/nucleus.css?1724149440" rel="stylesheet">
+    <link href="../css/fontawesome-all.min.css?1724149440" rel="stylesheet">
+    <link href="../css/hybrid.css?1724149440" rel="stylesheet">
+    <link href="../css/featherlight.min.css?1724149440" rel="stylesheet">
+    <link href="../css/perfect-scrollbar.min.css?1724149440" rel="stylesheet">
+    <link href="../css/auto-complete.css?1724149440" rel="stylesheet">
+    <link href="../css/atom-one-dark-reasonable.css?1724149440" rel="stylesheet">
+    <link href="../css/theme.css?1724149440" rel="stylesheet">
+    <link href="../css/hugo-theme.css?1724149440" rel="stylesheet">
+    
+    <link href="../css/theme-workshop.css?1724149440" rel="stylesheet">
+    
+    
+
+    <script src="../js/jquery-3.3.1.min.js?1724149440"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+  </head>
+  <body class="" data-url="../3-karpenter/">
+    <nav id="sidebar" class="showVisitedLinks">
+
+
+
+  <div id="header-wrapper">
+    <div id="header">
+      <a id="logo" href="../">
+
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" width="30%"><defs><style>.cls-1{fill:#fff;}.cls-2{fill:#f90;fill-rule:evenodd;}</style></defs><title>AWS-Logo_White-Color</title><path class="cls-1" d="M14.09,10.85a4.7,4.7,0,0,0,.19,1.48,7.73,7.73,0,0,0,.54,1.19.77.77,0,0,1,.12.38.64.64,0,0,1-.32.49l-1,.7a.83.83,0,0,1-.44.15.69.69,0,0,1-.49-.23,3.8,3.8,0,0,1-.6-.77q-.25-.42-.51-1a6.14,6.14,0,0,1-4.89,2.3,4.54,4.54,0,0,1-3.32-1.19,4.27,4.27,0,0,1-1.22-3.2A4.28,4.28,0,0,1,3.61,7.75,6.06,6.06,0,0,1,7.69,6.46a12.47,12.47,0,0,1,1.76.13q.92.13,1.91.36V5.73a3.65,3.65,0,0,0-.79-2.66A3.81,3.81,0,0,0,7.86,2.3a7.71,7.71,0,0,0-1.79.22,12.78,12.78,0,0,0-1.79.57,4.55,4.55,0,0,1-.58.22l-.26,0q-.35,0-.35-.52V2a1.09,1.09,0,0,1,.12-.58,1.2,1.2,0,0,1,.47-.35A10.88,10.88,0,0,1,5.77.32,10.19,10.19,0,0,1,8.36,0a6,6,0,0,1,4.35,1.35,5.49,5.49,0,0,1,1.38,4.09ZM7.34,13.38a5.36,5.36,0,0,0,1.72-.31A3.63,3.63,0,0,0,10.63,12,2.62,2.62,0,0,0,11.19,11a5.63,5.63,0,0,0,.16-1.44v-.7a14.35,14.35,0,0,0-1.53-.28,12.37,12.37,0,0,0-1.56-.1,3.84,3.84,0,0,0-2.47.67A2.34,2.34,0,0,0,5,11a2.35,2.35,0,0,0,.61,1.76A2.4,2.4,0,0,0,7.34,13.38Zm13.35,1.8a1,1,0,0,1-.64-.16,1.3,1.3,0,0,1-.35-.65L15.81,1.51a3,3,0,0,1-.15-.67.36.36,0,0,1,.41-.41H17.7a1,1,0,0,1,.65.16,1.4,1.4,0,0,1,.33.65l2.79,11,2.59-11A1.17,1.17,0,0,1,24.39.6a1.1,1.1,0,0,1,.67-.16H26.4a1.1,1.1,0,0,1,.67.16,1.17,1.17,0,0,1,.32.65L30,12.39,32.88,1.25A1.39,1.39,0,0,1,33.22.6a1,1,0,0,1,.65-.16h1.54a.36.36,0,0,1,.41.41,1.36,1.36,0,0,1,0,.26,3.64,3.64,0,0,1-.12.41l-4,12.86a1.3,1.3,0,0,1-.35.65,1,1,0,0,1-.64.16H29.25a1,1,0,0,1-.67-.17,1.26,1.26,0,0,1-.32-.67L25.67,3.64,23.11,14.34a1.26,1.26,0,0,1-.32.67,1,1,0,0,1-.67.17Zm21.36.44a11.28,11.28,0,0,1-2.56-.29,7.44,7.44,0,0,1-1.92-.67,1,1,0,0,1-.61-.93v-.84q0-.52.38-.52a.9.9,0,0,1,.31.06l.42.17a8.77,8.77,0,0,0,1.83.58,9.78,9.78,0,0,0,2,.2,4.48,4.48,0,0,0,2.43-.55,1.76,1.76,0,0,0,.86-1.57,1.61,1.61,0,0,0-.45-1.16A4.29,4.29,0,0,0,43,9.22l-2.41-.76A5.15,5.15,0,0,1,38,6.78a3.94,3.94,0,0,1-.83-2.41,3.7,3.7,0,0,1,.45-1.85,4.47,4.47,0,0,1,1.19-1.37A5.27,5.27,0,0,1,40.51.29,7.4,7.4,0,0,1,42.6,0a8.87,8.87,0,0,1,1.12.07q.57.07,1.08.19t.95.26a4.27,4.27,0,0,1,.7.29,1.59,1.59,0,0,1,.49.41.94.94,0,0,1,.15.55v.79q0,.52-.38.52a1.76,1.76,0,0,1-.64-.2,7.74,7.74,0,0,0-3.2-.64,4.37,4.37,0,0,0-2.21.47,1.6,1.6,0,0,0-.79,1.48,1.58,1.58,0,0,0,.49,1.18,4.94,4.94,0,0,0,1.83.92L44.55,7a5.08,5.08,0,0,1,2.57,1.6A3.76,3.76,0,0,1,47.9,11a4.21,4.21,0,0,1-.44,1.93,4.4,4.4,0,0,1-1.21,1.47,5.43,5.43,0,0,1-1.85.93A8.25,8.25,0,0,1,42.05,15.62Z"></path><path class="cls-2" d="M45.19,23.81C39.72,27.85,31.78,30,25,30A36.64,36.64,0,0,1,.22,20.57c-.51-.46-.06-1.09.56-.74A49.78,49.78,0,0,0,25.53,26.4,49.23,49.23,0,0,0,44.4,22.53C45.32,22.14,46.1,23.14,45.19,23.81Z"></path><path class="cls-2" d="M47.47,21.21c-.7-.9-4.63-.42-6.39-.21-.53.06-.62-.4-.14-.74,3.13-2.2,8.27-1.57,8.86-.83s-.16,5.89-3.09,8.35c-.45.38-.88.18-.68-.32C46.69,25.8,48.17,22.11,47.47,21.21Z"></path></svg>
+
+</a>
+
+    </div>
+    
+        <div class="searchbox">
+    <label for="search-by"><i class="fas fa-search"></i></label>
+    <input data-search-input id="search-by" type="search" placeholder="Search...">
+    <span data-search-clear=""><i class="fas fa-times"></i></span>
+</div>
+
+<script type="text/javascript" src="../js/lunr.min.js?1724149440"></script>
+<script type="text/javascript" src="../js/auto-complete.js?1724149440"></script>
+<script type="text/javascript">
+    
+        var baseurl = "\/";
+    
+</script>
+<script type="text/javascript" src="../js/search.js?1724149440"></script>
+
+    
+  </div>
+
+    <div class="highlightable">
+    <ul class="topics">
+
+        
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/1-introduce/" title="Introduction" class="dd-item 
+        
+        
+        
+        ">
+      <a href="../1-introduce/">
+           <b> 1. </b> Introduction
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/2-prerequiste/" title="Preparation" class="dd-item 
+        
+        
+        
+        ">
+      <a href="../2-prerequiste/">
+           <b> 2. </b> Preparation
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/2-prerequiste/2.1-awscli/" title="AWS CLI" class="dd-item 
+        
+        
+        
+        ">
+      <a href="../2-prerequiste/2.1-awscli/">
+           <b> 2.1 </b> AWS CLI
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/2-prerequiste/2.2-othercli/" title="Other CLI" class="dd-item 
+        
+        
+        
+        ">
+      <a href="../2-prerequiste/2.2-othercli/">
+           <b> 2.2 </b> Other CLI
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/3-karpenter/" title="Configure Karpenter" class="dd-item 
+        
+        active
+        
+        ">
+      <a href="../3-karpenter/">
+           <b> 3. </b> Configure Karpenter
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/4-topology_constraint/" title="Pod topology spread constraints" class="dd-item 
+        
+        
+        
+        ">
+      <a href="../4-topology_constraint/">
+           <b> 4. </b> Pod topology spread constraints
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/5-pod-db/" title="Pod disruption budget" class="dd-item 
+        
+        
+        
+        ">
+      <a href="../5-pod-db/">
+           <b> 5. </b> Pod disruption budget
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/6-demo/" title="Demo interruption" class="dd-item 
+        
+        
+        
+        ">
+      <a href="../6-demo/">
+           <b> 6. </b> Demo interruption
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/7-cleanup/" title="Clean up resources" class="dd-item 
+        
+        
+        
+        ">
+      <a href="../7-cleanup/">
+          <b>7. </b>Clean up resources
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+         
+    </ul>
+
+    
+    
+      <section id="shortcuts">
+        <h3>More</h3>
+        <ul>
+          
+              <li> 
+                  <a class="padding" href="https://www.facebook.com/groups/awsstudygroupfcj/"><i class='fab fa-facebook'></i> AWS Study Group</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="prefooter">
+      <hr/>
+      <ul>
+      
+        <li>
+          <a class="padding">
+            <i class="fas fa-language fa-fw"></i>
+          <div class="select-style">
+            <select id="select-language" onchange="location = this.value;">
+          
+          
+          
+              
+              
+                  
+                    
+                    
+                      <option id="en" value="/3-karpenter/" selected>English</option>
+                    
+                  
+              
+                  
+              
+          
+              
+              
+                  
+              
+                  
+                    
+                    
+                      <option id="vi" value="/vi/3-karpenter/">Tiếng Việt</option>
+                    
+                  
+              
+          
+        </select>
+        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+          width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+          <g>
+            <g id="arrow-drop-down">
+              <polygon points="0,63.75 127.5,191.25 255,63.75 		" />
+            </g>
+          </g>
+        </svg>
+        </div>
+        </a>
+        </li>
+      
+      
+      
+        <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Clear History</a></li>
+      
+      </ul>
+    </section>
+    
+    <section id="footer">
+      <left>
+    
+     <b> Workshop</b> <br>
+    <img src="https://hitwebcounter.com/counter/counter.php?page=7920860&style=0038&nbdigits=9&type=page&initCount=0" title="Migrate" Alt="web counter"   border="0" /></a>  <br>
+     <b> <a href="https://cloudjourney.awsstudygroup.com/">Cloud Journey</a></b> <br>
+    <img src="https://hitwebcounter.com/counter/counter.php?page=7830807&style=0038&nbdigits=9&type=page&initCount=0" title="Total CLoud Journey" Alt="web counter"   border="0"   />
+     
+</left>
+<left>
+    <br>
+    <br>
+        <b> Last Updated </b> <br>
+        <i><font color=orange>30-01-2022</font></i>
+    </left>
+    <left>
+        <br>
+        <br>
+            <b> Team </b> <br>
+           
+            <i> <a href="https://www.linkedin.com/in/sutrinh/"  style="color:orange">Sử Trịnh  </a> <br>
+                <a href="https://www.linkedin.com/in/jotaguy"  style="color:orange">Gia Hưng </a> <br>
+                <a href="https://www.linkedin.com/in/hiepnguyendt"  style="color:orange">Thanh Hiệp </a>
+               
+        </i>
+        </left>
+
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    </section>
+  </div>
+</nav>
+
+
+
+
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable">
+              
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                 
+                 
+                    
+          
+          
+            
+            
+          
+          
+            <a href='../'>Overview</a> > Configure Karpenter
+          
+        
+          
+        
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#environment-variables">Environment variables</a></li>
+        <li><a href="#karpenters-prerequisites">Karpenter&rsquo;s prerequisites</a></li>
+        <li><a href="#creating-eks-cluster">Creating EKS cluster</a></li>
+        <li><a href="#install-karpenter">Install Karpenter</a></li>
+        <li><a href="#configure-karpenter">Configure Karpenter</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          
+            <h1>
+              
+              Configure Karpenter
+            </h1>
+          
+
+        
+
+
+
+	<h3 id="overview">Overview</h3>
+<p>In this section, we will create an EKS cluster and install Karpenter on it using CLI.</p>
+<p>At the time this workshop is written, the latest Kubernetes stable version is 1.30 and latest Karpenter version is 0.37. In the future, there will be different versions.</p>
+<h3 id="environment-variables">Environment variables</h3>
+<p>Firstly, we must export some environment variables for later using:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>export KARPENTER_NAMESPACE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;kube-system&#34;</span>
+</span></span><span style="display:flex;"><span>export KARPENTER_VERSION<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;0.37.0&#34;</span>
+</span></span><span style="display:flex;"><span>export K8S_VERSION<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;1.30&#34;</span>
+</span></span><span style="display:flex;"><span>export AWS_PARTITION<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;aws&#34;</span> <span style="color:#75715e"># if you are not using standard partitions, you may need to configure to aws-cn / aws-us-gov</span>
+</span></span><span style="display:flex;"><span>export CLUSTER_NAME<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>USER<span style="color:#e6db74">}</span><span style="color:#e6db74">-karpenter-demo&#34;</span>
+</span></span><span style="display:flex;"><span>export AWS_DEFAULT_REGION<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;us-west-2&#34;</span>
+</span></span><span style="display:flex;"><span>export AWS_ACCOUNT_ID<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>aws sts get-caller-identity --query Account --output text<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>export TEMPOUT<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>mktemp<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>export AMD_AMI_ID<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>aws ssm get-parameter --name /aws/service/eks/optimized-ami/<span style="color:#e6db74">${</span>K8S_VERSION<span style="color:#e6db74">}</span>/amazon-linux-2/recommended/image_id --query Parameter.Value --output text<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+</span></span></code></pre></div><h3 id="karpenters-prerequisites">Karpenter&rsquo;s prerequisites</h3>
+<p>By default, Karpenter needs a SQS queue to listen for spot-interruption events and policy to access EC2 API. We will deploy a SQS queue, required event rules and required role for Karpenter controller using CloudFormation:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -fsSL https://raw.githubusercontent.com/aws/karpenter-provider-aws/v<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>KARPENTER_VERSION<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>/website/content/en/preview/getting-started/getting-started-with-karpenter/cloudformation.yaml  &gt; <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>TEMPOUT<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span><span style="color:#f92672">&amp;&amp;</span> aws cloudformation deploy <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --stack-name <span style="color:#e6db74">&#34;Karpenter-</span><span style="color:#e6db74">${</span>CLUSTER_NAME<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --template-file <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>TEMPOUT<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --capabilities CAPABILITY_NAMED_IAM <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --parameter-overrides <span style="color:#e6db74">&#34;ClusterName=</span><span style="color:#e6db74">${</span>CLUSTER_NAME<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span></code></pre></div><h3 id="creating-eks-cluster">Creating EKS cluster</h3>
+<p>In the upcoming step, we will create an EKS cluster, install eks-pod-identity-agent add-ons for the cluster, add a service account for later used by Karpenter controller and create a managed node group at the same time by running this command:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>eksctl create cluster -f - <span style="color:#e6db74">&lt;&lt;EOF
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">---
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">apiVersion: eksctl.io/v1alpha5
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">kind: ClusterConfig
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">metadata:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  name: ${CLUSTER_NAME}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  region: ${AWS_DEFAULT_REGION}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  version: &#34;${K8S_VERSION}&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  tags:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    karpenter.sh/discovery: ${CLUSTER_NAME}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">iam:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"> withOIDC: true
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  podIdentityAssociations:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  - namespace: &#34;${KARPENTER_NAMESPACE}&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    serviceAccountName: karpenter
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    roleName: ${CLUSTER_NAME}-karpenter
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    permissionPolicyARNs:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    - arn:${AWS_PARTITION}:iam::${AWS_ACCOUNT_ID}:policy/KarpenterControllerPolicy-${CLUSTER_NAME}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">iamIdentityMappings:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">- arn: &#34;arn:${AWS_PARTITION}:iam::${AWS_ACCOUNT_ID}:role/KarpenterNodeRole-${CLUSTER_NAME}&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  username: system:node:{{EC2PrivateDNSName}}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  groups:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  - system:bootstrappers
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  - system:nodes
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">managedNodeGroups:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">- instanceType: m5.large
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  amiFamily: AmazonLinux2
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  name: ${CLUSTER_NAME}-ng
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  desiredCapacity: 2
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  minSize: 1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  maxSize: 10
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">addons:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">- name: eks-pod-identity-agent
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span></code></pre></div><h3 id="install-karpenter">Install Karpenter</h3>
+<p>Now, we can simply deploy Karpenter on our cluster by using Helm:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>helm upgrade --install karpenter oci://public.ecr.aws/karpenter/karpenter --version <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>KARPENTER_VERSION<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span> --namespace <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>KARPENTER_NAMESPACE<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span> --create-namespace <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --set <span style="color:#e6db74">&#34;settings.clusterName=</span><span style="color:#e6db74">${</span>CLUSTER_NAME<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --set <span style="color:#e6db74">&#34;settings.interruptionQueue=</span><span style="color:#e6db74">${</span>CLUSTER_NAME<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --set controller.resources.requests.cpu<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --set controller.resources.requests.memory<span style="color:#f92672">=</span>1Gi <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --set controller.resources.limits.cpu<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --set controller.resources.limits.memory<span style="color:#f92672">=</span>1Gi <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --wait
+</span></span></code></pre></div><h3 id="configure-karpenter">Configure Karpenter</h3>
+<p>When using Helm to deploy Karpenter, we have created two custom resources which are NodePool and NodeClass. To make our Karpenter controller operate correctly, you must create at least a NodePool and a NodeClass.</p>
+<p>A NodePool in Karpenter refers to a collection of nodes that share similar configuration attributes, such as instance types, sizes, or labels. When Karpenter needs to scale up the cluster, it creates new nodes in the specified NodePool based on the current demand from pods needing resources. This flexibility allows for more efficient resource management and helps optimize costs by ensuring that only the required amount of compute resources is provisioned.</p>
+<p>NodeClass is a resource being referenced by NodePool, helps enable configuration of AWS specific settings, such as the maximum pods per node, the subnet that node will be created, security group for node, etc…</p>
+<p>In this workshop, we use Spot instance for cost saving and luckily, by default Karpenter will always prioritize Spot instance over On-demand instance. Even though with Karpenter, it can fastly replace reclaimed nodes with new nodes, if you want to decrease the probability of Spot instance interruption, you can visit this website and choose the instance types that have the least frequency of interruption: Amazon EC2 Spot Instance Advisor.</p>
+<p>Here I create our default NodePool and a NodeClass by running these commands:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cat <span style="color:#e6db74">&lt;&lt;EOF | envsubst | kubectl apply -f -
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">apiVersion: karpenter.sh/v1beta1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">kind: NodePool
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">metadata:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  name: default
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">spec:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  template:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    spec:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      requirements:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        - key: kubernetes.io/arch
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          operator: In
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          values: [&#34;amd64&#34;]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        - key: kubernetes.io/os
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          operator: In
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          values: [&#34;linux&#34;]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        - key: karpenter.sh/capacity-type
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          operator: In
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          values: [&#34;spot&#34;, &#34;on-demand&#34;]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        - key: karpenter.k8s.aws/instance-category
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          operator: In
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          values: [&#34;c&#34;, &#34;m&#34;, &#34;r&#34;]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        - key: karpenter.k8s.aws/instance-generation
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          operator: Gt
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          values: [&#34;2&#34;]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      nodeClassRef:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        apiVersion: karpenter.k8s.aws/v1beta1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        kind: EC2NodeClass
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        name: default
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  limits:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    cpu: 1000
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  disruption:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    consolidationPolicy: WhenUnderutilized
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    expireAfter: 720h # 30 * 24h = 720h
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">---
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">apiVersion: karpenter.k8s.aws/v1beta1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">kind: EC2NodeClass
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">metadata:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  name: default
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">spec:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  amiFamily: AL2 # Amazon Linux 2
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  role: &#34;KarpenterNodeRole-${CLUSTER_NAME}&#34; # replace with your cluster name
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  subnetSelectorTerms:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    - tags:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        karpenter.sh/discovery: &#34;${CLUSTER_NAME}&#34; # replace with your cluster name
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  securityGroupSelectorTerms:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    - tags:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        karpenter.sh/discovery: &#34;${CLUSTER_NAME}&#34; # replace with your cluster name
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  amiSelectorTerms:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    - id: &#34;${ARM_AMI_ID}&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    - id: &#34;${AMD_AMI_ID}&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">EOF</span>
+</span></span></code></pre></div>
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div> 
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+        
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+        
+        
+
+
+	 
+	 
+		
+			<a class="nav nav-prev" href="../2-prerequiste/2.2-othercli/" title="Other CLI"> <i class="fa fa-chevron-left"></i></a>
+		
+		
+			<a class="nav nav-next" href="../4-topology_constraint/" title="Pod topology spread constraints" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+		
+	
+    </div>
+
+    </section>
+    
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="../js/clipboard.min.js?1724149440"></script>
+    <script src="../js/perfect-scrollbar.min.js?1724149440"></script>
+    <script src="../js/perfect-scrollbar.jquery.min.js?1724149440"></script>
+    <script src="../js/jquery.sticky.js?1724149440"></script>
+    <script src="../js/featherlight.min.js?1724149440"></script>
+    <script src="../js/highlight.pack.js?1724149440"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="../js/modernizr.custom-3.6.0.js?1724149440"></script>
+    <script src="../js/learn.js?1724149440"></script>
+    <script src="../js/hugo-learn.js?1724149440"></script>
+
+    <link href="../mermaid/mermaid.css?1724149440" rel="stylesheet" />
+    <script src="../mermaid/mermaid.js?1724149440"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-158079754-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+  </body>
+</html>
